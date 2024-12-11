@@ -1,0 +1,64 @@
+{% extends 'base.html' %} {% load humanize %} {% block content %}
+
+<style>
+  body {
+    background-color: #f8f9fa; /* Fond doux pour une meilleure lisibilité */
+  }
+  .card:hover {
+    transform: scale(1.02); /* Effet de zoom au survol */
+    transition: transform 0.3s ease-in-out;
+  }
+  .card-title {
+    font-size: 1.2rem;
+  }
+  .card-footer {
+    background-color: #f1f1f1; /* Fond clair pour le pied de carte */
+  }
+</style>
+
+<section class="bg-light py-5">
+  <div class="container text-center">
+    <h2 class="display-4 fw-bold mb-3">KETAB Jobs. Get hired quickly!</h2>
+    <p class="lead">Find your dream job among thousands of listings!</p>
+  </div>
+</section>
+
+<div class="container my-5">
+  {% if jobs %}
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for job in jobs %}
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title text-primary fw-bold">{{ job.title }}</h5>
+          <p class="card-text text-muted">
+            <i class="bi bi-cash-stack"></i> {{ job.salary|intcomma }} $ /year
+          </p>
+          <p class="card-text">
+            <i class="bi bi-geo-alt"></i> {{ job.location }}
+          </p>
+          <p class="card-text">
+            <i class="bi bi-person-circle"></i> Posted by: {{ job.staf }}
+          </p>
+          <a
+            href="{% url 'job-details' job.pk %}"
+            class="btn btn-primary btn-sm mt-3"
+          >
+            View Details
+          </a>
+        </div>
+        <div class="card-footer text-muted">
+          <small>Created {{ job.timestamp|naturaltime }}</small>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="alert alert-info text-center" role="alert">
+    No jobs available at the moment. Check back later!
+  </div>
+  {% endif %}
+</div>
+
+{% endblock content %}

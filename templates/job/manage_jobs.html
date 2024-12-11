@@ -1,0 +1,170 @@
+{% extends 'base.html' %} {% block content %}
+
+<style>
+  /* Style général pour la page */
+  body {
+    font-family: "Inter", sans-serif;
+    background-color: #f9fafb;
+    color: #212529;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Conteneur principal */
+  .container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+  }
+
+  /* Titre principal */
+  h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #343a40;
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 2px solid #dee2e6;
+    padding-bottom: 10px;
+  }
+
+  /* Tableau */
+  .table {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: white;
+    margin-top: 20px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .table thead {
+    background-color: #343a40;
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  .table th,
+  .table td {
+    text-align: left;
+    padding: 12px 15px;
+    font-size: 0.9rem;
+  }
+
+  .table tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+  }
+
+  .table tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+  }
+
+  .table tbody tr:hover {
+    background-color: #e9ecef;
+    transition: background-color 0.3s ease;
+  }
+
+  /* Liens */
+  a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: 500;
+  }
+
+  a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+  }
+
+  /* Badges */
+  .badge {
+    padding: 5px 10px;
+    font-size: 0.85rem;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+
+  .badge.bg-success {
+    background-color: #28a745;
+    color: white;
+  }
+
+  .badge.bg-warning {
+    background-color: #ffc107;
+    color: #343a40;
+  }
+
+  /* Lien "View all" */
+  .table td small {
+    font-size: 0.85rem;
+    font-weight: normal;
+  }
+
+  .table td small a {
+    color: #007bff;
+  }
+
+  .table td small a:hover {
+    color: #0056b3;
+  }
+
+  /* Responsive */
+  @media screen and (max-width: 768px) {
+    .table th,
+    .table td {
+      font-size: 0.85rem;
+      padding: 10px;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+    }
+  }
+</style>
+
+<div class="container mt-4">
+  <h2 class="mb-4">Manage Jobs <strong>{{ job.title }}</strong> Position</h2>
+
+  <table class="table table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">Job title</th>
+        <th scope="col">Location</th>
+        <th scope="col">Salary</th>
+        <th scope="col">Applicant</th>
+        <th scope="col">Status</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for job in jobs %}
+      <tr>
+        <td>{{ job.title }}</td>
+        <td>{{ job.location }}</td>
+        <td>{{ job.salary }}</td>
+        <td>
+          {{job.apply_set.all.count}}
+          <a href="{%url 'all-applicants' job.pk%}"><small> View all</small></a>
+        </td>
+
+        {%if job.is_available%}
+        <td>
+          <span class="badge bg-success">Active</span>
+        </td>
+        {%else%}
+        <td>
+          <span class="badge bg-warning"> No Active</span>
+        </td>
+        {%endif%}
+
+        <td>
+          <a href="{% url 'update-job' job.pk%}"><small>update Job</small></a> /
+          <a href="{% url 'ranked_candidates' job.pk %}">Trier les CV</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

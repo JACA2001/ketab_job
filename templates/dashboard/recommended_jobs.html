@@ -1,0 +1,27 @@
+{%extends 'base.html'%}{%block content%}
+
+<h2 class="text-center">Recommended Jobs</h2>
+<div class="row">
+  {% for job, score in recommended_jobs %}
+  <div class="col-md-6 mb-4">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-body">
+        <h5 class="card-title">{{ job.title }} at {{ job.staf }}</h5>
+        <p><strong>Location:</strong> {{ job.location }}</p>
+        <p><strong>Salary:</strong> {{ job.salary }}</p>
+        <p><strong>Match Score:</strong> {{ score|floatformat:2 }}</p>
+        <a href="{% url 'job-details' job.pk %}" class="btn btn-primary"
+          >View Details</a
+        >
+        <a
+          href="{% url 'generate-cover-letter' job.pk %}"
+          class="btn btn-secondary"
+          >Generate Cover Letter</a
+        >
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{%endblock content%}

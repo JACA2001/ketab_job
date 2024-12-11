@@ -1,0 +1,104 @@
+{% extends 'base.html' %} {% block content %}
+<style>
+  /* Conteneur principal */
+  .container {
+    max-width: 600px;
+  }
+
+  /* Titre principal */
+  h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #343a40;
+    text-align: center;
+  }
+
+  /* Card styling */
+  .card {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  .card-body {
+    padding: 30px;
+    background: #f8f9fa;
+  }
+
+  .card-body h4 {
+    font-size: 1.5rem;
+    color: #007bff;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  .card-body p {
+    font-size: 1rem;
+    color: #6c757d;
+    line-height: 1.6;
+  }
+
+  /* Card footer */
+  .card-footer {
+    background: #ffffff;
+    border-top: 1px solid #e9ecef;
+    text-align: right;
+    padding: 15px;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .container {
+      padding: 20px;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+    }
+  }
+</style>
+
+<div class="container mt-5">
+  <h2 class="mb-4">Your Profile</h2>
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h4 class="card-title">{{ user.username }}</h4>
+      <p class="card-text">
+        <strong>Email:</strong> {{ user.email }}<br />
+        <strong>Phone Number:</strong> {{ user.phone_number }}<br />
+        <strong>Address:</strong> {{ user.address}}<br />
+      </p>
+    </div>
+    <div class="d-flex justify-content-center">
+      <a href="{% url 'change-password'   %}" class="btn btn-primary"
+        >Change password</a
+      >
+    </div>
+    <br />
+      <a href="{% url 'update-profile' user.pk  %}" class="btn btn-primary"
+        >Edit Profile</a
+      >
+    </div>
+  </div>
+</div>
+{% endblock %}

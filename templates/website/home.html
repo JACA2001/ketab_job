@@ -1,0 +1,205 @@
+{% extends 'base.html' %} {% block content %} {% load humanize %}
+<!DOCTYPE html>
+{% load widget_tweaks %}
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Django Jobs Portal</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* Général */
+      body {
+        background-color: #f4f6f9;
+        font-family: "Poppins", sans-serif;
+      }
+
+      /* Titre principal */
+      h1 {
+        font-weight: bold;
+        color: #007bff;
+        text-shadow: 2px 2px 5px rgba(0, 123, 255, 0.2);
+      }
+
+      /* Formulaire de recherche */
+      .form-label {
+        font-weight: bold;
+        color: #007bff;
+        text-align: center;
+      }
+
+      .form-control {
+        border: 2px solid #007bff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+      }
+
+      .form-control:focus {
+        border-color: #0056b3;
+        box-shadow: 0px 6px 10px rgba(0, 123, 255, 0.4);
+      }
+
+      /* Boutons */
+      .btn-primary {
+        background-color: #007bff;
+        border: none;
+        font-weight: bold;
+        transition: all 0.3s ease-in-out;
+      }
+
+      .btn-primary:hover {
+        background-color: #0056b3;
+        transform: scale(1.05);
+      }
+
+      .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+        font-weight: bold;
+        transition: all 0.3s ease-in-out;
+      }
+
+      .btn-secondary:hover {
+        background-color: #5a6268;
+        transform: scale(1.05);
+      }
+
+      /* Cartes d'emploi */
+      .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .card-title {
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: #007bff;
+      }
+
+      .card-text {
+        color: #6c757d;
+        font-size: 0.95rem;
+      }
+
+      .btn-sm {
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+      }
+
+      /* Introduction */
+      .intro-text {
+        font-size: 1.1rem;
+        color: #495057;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container my-5">
+      <h1 class="text-center">KETAB Jobs. Get Hired Quickly!</h1>
+
+      <!-- Formulaire de recherche -->
+      <form class="row g-3 mt-4" method="GET">
+        <div class="col-md-3">
+          <label for="id_title" class="form-label">Filter by Title</label>
+          {% render_field filter.form.title class="form-control" %}
+        </div>
+        <div class="col-md-3">
+          <label for="id_location" class="form-label">Filter by Location</label>
+          {% render_field filter.form.location class="form-control" %}
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+          <button class="btn btn-primary w-100" type="submit">
+            <i class="bi bi-search"></i> Search
+          </button>
+        </div>
+      </form>
+
+      <!-- Texte d'introduction -->
+      <p class="intro-text text-center">
+        Welcome to Django Job Portal! Search and get your dream job. We have
+        thousands of job offerings for you. Don't forget to leave a like when
+        you get a job. Good luck with your job hunt!
+      </p>
+
+      <!-- Bouton More Jobs -->
+      <div class="text-center mb-4">
+        <a href="{% url 'job-list' %}" class="btn btn-secondary">More Jobs</a>
+      </div>
+
+      <!-- Liste des 3 emplois affichés par défaut -->
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for job in jobs %}
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">{{ job.title }}</h5>
+              <p class="card-text">
+                <i class="bi bi-geo-alt"></i> Location: {{ job.location }}
+              </p>
+              <p class="card-text">
+                <i class="bi bi-currency-dollar"></i>
+                Salary: {{job.salary|intcomma }} $ /year
+              </p>
+              <p class="card-text">
+                <i class="bi bi-person-circle"></i> Posted by: {{ job.staf }}
+              </p>
+              <a
+                href="{% url 'job-details' job.pk %}"
+                class="btn btn-primary btn-sm mt-3"
+                >View Details</a
+              >
+            </div>
+            <div class="card-footer text-muted">
+              <small>Created {{ job.timestamp|naturaltime }}</small>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Résultats de recherche -->
+      {% if is_searching %}
+      <h2 class="mt-5">Search Results</h2>
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for job in filter.qs %}
+        <div class="col">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">{{ job.title }}</h5>
+              <p class="card-text">
+                <i class="bi bi-geo-alt"></i> Location: {{ job.location }}
+              </p>
+              <p class="card-text">
+                <i class="bi bi-currency-dollar"></i> Salary: {{ job.salary }}
+              </p>
+              <p class="card-text">
+                <i class="bi bi-person-circle"></i> Posted by: {{ job.staf }}
+              </p>
+              <a
+                href="{% url 'job-details' job.pk %}"
+                class="btn btn-primary btn-sm mt-3"
+                >View Details</a
+              >
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>
+{% endblock %}

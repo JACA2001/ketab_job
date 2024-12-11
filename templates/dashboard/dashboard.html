@@ -1,0 +1,169 @@
+{% extends 'base.html'%} {% block content%}
+
+<style>
+  .hero-section {
+    background: linear-gradient(90deg, #007bff, #0056b3);
+    color: white;
+  }
+
+  .alert {
+    font-size: 1.1rem;
+    padding: 15px;
+  }
+
+  .card {
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+</style>
+
+<section class="container my-5">
+  {% if request.user.is_applicant and not request.user.has_resume %}
+  <div class="alert alert-warning text-center">
+    <strong>Important!</strong> You have not yet added your information. Please
+    add your profile to apply for jobs.
+    <a href="{% url 'update-info' %}" class="btn btn-warning btn-sm"
+      >Add Info</a
+    >
+  </div>
+  {% elif request.user.is_recruiter and not request.user.has_company %}
+  <div class="alert alert-warning text-center">
+    <strong>Important!</strong> You have not yet added a company profile. Please
+    create a company profile to post jobs.
+    <a href="{% url 'update-staf' %}" class="btn btn-warning btn-sm"
+      >Create Company</a
+    >
+  </div>
+  {% endif %}
+
+  <div class="row text-center">
+    {% if request.user.is_applicant %}
+    <!-- Actions pour les applicants -->
+    <div class="col-md-6 mb-4">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title text-primary">Add Resume</h5>
+          <p class="card-text">
+            Showcase your skills to potential employers by uploading or updating
+            your resume.
+          </p>
+          <a href="{% url 'update-info'%}" class="btn btn-primary"
+            >Update Resume</a
+          >
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-4">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title text-primary">Explore Jobs</h5>
+          <p class="card-text">
+            Browse through thousands of job opportunities tailored to your
+            profile.
+          </p>
+          <a href="{% url 'job-list' %}" class="btn btn-primary">Search Jobs</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 mb-4">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title text-primary">Recommended Jobs</h5>
+          <p class="card-text">
+            Discover job opportunities tailored to your profile based on your
+            resume.
+          </p>
+          <a href="{% url 'recommended-jobs'  %}" class="btn btn-primary">
+            View Recommendations
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 mb-4">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title text-primary">Generate Cover Letter</h5>
+          <p class="card-text">
+            Discover job opportunities tailored to your profile based on your
+            resume.
+          </p>
+          {% comment %}
+          <a href="{% url 'letters-table' %}" class="btn btn-primary">
+            Generate Cover Letters
+          </a>
+          {% endcomment %}
+        </div>
+      </div>
+    </div>
+
+    {% elif request.user.is_recruiter %}
+    <!-- Actions pour les recruiters -->
+    <div class="col-md-6 mb-4">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title text-primary">Create Company</h5>
+          <p class="card-text">
+            Add your company profile to start posting jobs and attract top
+            talents.
+          </p>
+          <a href="{% url 'update-staf' %}" class="btn btn-primary"
+            >Create Company</a
+          >
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-4">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title text-primary">Post Jobs</h5>
+          <p class="card-text">
+            Publish new job opportunities to connect with skilled professionals.
+          </p>
+          <a href="{% url 'create-job' %}" class="btn btn-primary"
+            >Post a Job</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 mb-4">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title text-primary">Browse CVs</h5>
+          <p class="card-text">
+            Access a list of applicants and their profiles ranked by relevance.
+          </p>
+          <a href="{% url 'recruiter-cvs' %}" class="btn btn-primary">
+            Browse CVs
+          </a>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{%endblock content%}

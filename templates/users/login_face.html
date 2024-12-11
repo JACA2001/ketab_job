@@ -1,0 +1,63 @@
+{% comment %} {% extends 'base.html' %} {% block content %}
+<h1>Login with Face Recognition</h1>
+
+<!-- Affichage de la vidéo pour la reconnaissance faciale -->
+<div>
+  <video id="video" width="720" height="560" autoplay muted></video>
+  <canvas id="canvas" width="720" height="560" style="display: none"></canvas>
+</div>
+
+<!-- Bouton pour démarrer la reconnaissance faciale -->
+<button id="start-recognition">Start Face Recognition</button>
+
+<!-- Formulaire de connexion avec un champ caché pour transmettre les données du visage -->
+<form id="login-form" action="{% url 'login' %}" method="POST">
+  {% csrf_token %}
+  <input type="hidden" name="face_data" id="face-data" value="" />
+  <button type="submit">Submit</button>
+</form>
+
+<!-- Script JavaScript pour la reconnaissance faciale -->
+<script>
+  // Accéder à la vidéo de la caméra
+  const video = document.getElementById("video");
+  const canvas = document.getElementById("canvas");
+  const ctx = canvas.getContext("2d");
+  const faceDataInput = document.getElementById("face-data");
+  const startRecognitionButton = document.getElementById("start-recognition");
+
+  // Démarrer la vidéo
+  async function startVideo() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      video.srcObject = stream;
+    } catch (err) {
+      console.error("Error accessing the camera: ", err);
+    }
+  }
+
+  // Capturer une image de la vidéo et extraire les données du visage
+  function captureFaceData() {
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const imageData = canvas.toDataURL("image/jpeg"); // Encode l'image en base64
+
+    // Mettre à jour le champ caché avec les données du visage
+    faceDataInput.value = imageData;
+
+    // Optionnel : Vous pouvez afficher l'image capturée pour vérification (en bas du formulaire par exemple)
+    // const capturedImage = document.createElement('img');
+    // capturedImage.src = imageData;
+    // document.body.appendChild(capturedImage);
+  }
+
+  // Démarrer la reconnaissance faciale
+  startRecognitionButton.addEventListener("click", () => {
+    captureFaceData();
+    // Vous pouvez ajouter ici des appels API pour analyser l'image ou pour valider les données du visage
+    alert("Face captured! Now you can submit the form.");
+  });
+
+  // Démarrer la vidéo à l'ouverture de la page
+  startVideo();
+</script>
+{% endblock %} {% endcomment %}

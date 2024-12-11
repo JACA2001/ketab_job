@@ -1,0 +1,62 @@
+{% comment %} {% extends 'base.html'%} {% block content%}
+<style>
+  h2 {
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+    color: #007bff;
+  }
+
+  .table {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .table-hover tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+
+  .btn-success {
+    background-color: #28a745;
+    border: none;
+  }
+
+  .btn-success:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+  }
+</style>
+
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Generate Cover Letters</h2>
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover">
+      <thead class="table-primary">
+        <tr>
+          <th scope="col">Job Title</th>
+          <th scope="col">Location</th>
+          <th scope="col">Salary</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for job in jobs %}
+        <tr>
+          <td>{{ job.title }}</td>
+          <td>{{ job.location }}</td>
+          <td>{{ job.salary }}</td>
+          <td>
+            <a
+              href="{% url 'generate-cover-letter' job.pk %}"
+              class="btn btn-success btn-sm"
+            >
+              Generate Cover Letter
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{%endblock content%} {% endcomment %}

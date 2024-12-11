@@ -1,0 +1,22 @@
+{%extends 'base.html'%} {%block content%}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Générer une lettre de motivation</title>
+  </head>
+  <body>
+    <h1>Générer une lettre de motivation pour : {{ job.title }}</h1>
+    <p><strong>Localisation :</strong> {{ job.location }}</p>
+    <p><strong>Salaire :</strong> {{ job.salary }}</p>
+    <p><strong>Description :</strong> {{ job.requirements }}</p>
+    <p><strong>Exigences :</strong> {{ job.skills_required }}</p>
+
+    <h2>Téléverser un CV</h2>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit">Générer une lettre de motivation</button>
+    </form>
+  </body>
+</html>
+{%endblock content%}

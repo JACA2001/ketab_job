@@ -1,0 +1,97 @@
+{% extends "users/base.html" %} {% load widget_tweaks %} {% block content %}
+
+<form
+  class="p-4 p-md border rounded-3 bg-light"
+  method="POST"
+  enctype="multipart/form-data"
+>
+  {% csrf_token %}
+
+  <div class="form-floating mb-3">
+    {% render_field form.username class="form-control" %}
+    <label for="floatingInput">Username</label>
+    {% if form.username.errors %}
+    <div class="text-danger">
+      {% for error in form.username.errors %}
+      <p>{{ error }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="form-floating mb-3">
+    {% render_field form.email class="form-control" %}
+    <label for="floatingInput">Email adresse</label>
+    {% if form.email.errors %}
+    <div class="text-danger">
+      {% for error in form.email.errors %}
+      <p>{{ error }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="form-floating mb-3">
+    {% render_field form.phone_number class="form-control" %}
+    <label for="floatingInput">Phone number</label>
+    {% if form.phone_number.errors %}
+    <div class="text-danger">
+      {% for error in form.phone_number.errors %}
+      <p>{{ error }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="form-floating mb-3">
+    {% render_field form.address class="form-control" %}
+    <label for="floatingInput">Address</label>
+    {% if form.address.errors %}
+    <div class="text-danger">
+      {% for error in form.address.errors %}
+      <p>{{ error }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="form-floating mb-3">
+    {% render_field form.password1 class="form-control" %}
+    <label for="floatingInput">Password</label>
+    {% if form.password1.errors %}
+    <div class="text-danger">
+      {% for error in form.password1.errors %}
+      <p>{{ error }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="form-floating mb-3">
+    {% render_field form.password2 class="form-control" %}
+    <label for="floatingInput">Confirm Password</label>
+    {% if form.password2.errors %}
+    <div class="text-danger">
+      {% for error in form.password2.errors %}
+      <p>{{ error }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  <form
+    id="capture-form"
+    class="p-4 p-md border rounded-3 bg-light"
+    method="POST"
+  >
+    {% csrf_token %}
+
+    <button type="submit" class="w-100 btn btn-lg btn-primary">Submit</button>
+  </form>
+
+  <small class="text-muted"
+    >Already have an account? <a href="{% url 'login' %}">Sign In</a></small
+  >
+</form>
+
+{% endblock content %}

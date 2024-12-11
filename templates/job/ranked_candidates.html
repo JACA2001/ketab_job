@@ -1,0 +1,100 @@
+{% extends 'base.html' %} {% block content %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Candidats pour {{ job.title }}</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 0;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-top: 20px;
+      }
+
+      table {
+        width: 80%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      th,
+      td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #4caf50;
+        color: white;
+        text-transform: uppercase;
+      }
+
+      tr:hover {
+        background-color: #f1f1f1;
+      }
+
+      td a {
+        color: #4caf50;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      td a:hover {
+        text-decoration: underline;
+      }
+
+      .container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Candidats pour le poste : {{ job.title }}</h1>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Score</th>
+          <th>CV</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for entry in ranked_applicants %}
+        <tr>
+          <td>
+            {{ entry.candidate.first_name }} {{ entry.candidate.surname }}
+          </td>
+          <td>{{ entry.score }}</td>
+          <td>
+            {% if entry.candidate.upload_cv %}
+            <a href="{{ entry.candidate.upload_cv.url }}" target="_blank"
+              >Télécharger</a
+            >
+            {% else %} Non disponible {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>
+
+{% endblock content %}

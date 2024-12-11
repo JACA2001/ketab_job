@@ -1,0 +1,19 @@
+{% extends 'base.html' %} {% block content %}
+<h1>Boîte de réception</h1>
+
+<div style="border: 1px solid #ddd; padding: 10px">
+  {% for message in messages %}
+  <div style="margin: 10px 0; padding: 10px; border-bottom: 1px solid #ddd">
+    <strong> {{ message.sender|default:message.recipient }} : </strong>
+    {{ message.content|truncatewords:10 }}<br />
+    <small>{{ message.last_message }}</small>
+    <a
+      href="{% url 'chat:chat_view' message.recipient|default:message.sender %}"
+      >Voir la conversation</a
+    >
+  </div>
+  {% empty %}
+  <p>Aucun message pour l'instant.</p>
+  {% endfor %}
+</div>
+{% endblock %}

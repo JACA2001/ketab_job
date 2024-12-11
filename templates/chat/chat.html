@@ -1,0 +1,68 @@
+<style>
+  .inbox-container {
+    width: 80%;
+    margin: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+
+  .message-item {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .message-item:last-child {
+    border-bottom: none;
+  }
+
+  .message-content {
+    flex: 1;
+    margin-right: 10px;
+  }
+
+  .message-time {
+    color: gray;
+    font-size: 0.8em;
+  }
+
+  .message-action {
+    font-size: 0.9em;
+    color: #007bff;
+    text-decoration: none;
+  }
+
+  .message-action:hover {
+    text-decoration: underline;
+  }
+</style>
+
+{% extends 'base.html' %} {% block content %}
+<h1>Chat with {{ recipient.username }}</h1>
+
+<div style="margin: 20px; border: 1px solid #ddd; padding: 10px">
+  {% for message in messages %}
+  <div style="margin: 10px 0">
+    <strong>{{ message.sender.username }}</strong>: {{ message.content }}
+    <small style="color: gray">({{ message.timestamp }})</small>
+  </div>
+  {% empty %}
+  <p>No messages yet.</p>
+  {% endfor %}
+</div>
+
+<form method="POST">
+  {% csrf_token %}
+  <textarea
+    name="content"
+    rows="3"
+    style="width: 100%"
+    placeholder="Écrivez un message..."
+  ></textarea>
+  <button type="submit" style="margin-top: 10px">Envoyer</button>
+</form>
+{% endblock %}

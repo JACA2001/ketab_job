@@ -1,0 +1,135 @@
+{%extends 'base.html'%} {%load widget_tweaks%} {%block content%}
+
+<style>
+  /* Style pour le fond de la page */
+  body {
+    background-color: #f4f6f9; /* Fond doux */
+    font-family: "Poppins", sans-serif; /* Police moderne */
+    margin: 0;
+    padding: 0;
+
+    justify-content: center; /* Centre horizontalement */
+    align-items: center;
+  }
+
+  /* Conteneur principal pour centrer le formulaire */
+  .form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(
+      100vh - 70px
+    ); /* Ajuste pour exclure la hauteur de la navbar */
+    padding: 20px; /* Espacement pour les petits écrans */
+  }
+
+  /* Style pour la carte du formulaire */
+  .card {
+    background: #ffffff; /* Fond blanc */
+    border-radius: 15px; /* Coins arrondis */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Ombre douce */
+    padding: 30px; /* Espacement interne */
+    max-width: 600px; /* Largeur maximale */
+    width: 100%; /* Prend toute la largeur disponible */
+  }
+
+  /* Titre du formulaire */
+  .card-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #343a40;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  /* Champs de formulaire */
+  .form-control {
+    border-radius: 8px; /* Coins arrondis */
+    border: 1px solid #ced4da; /* Bordure légère */
+    padding: 12px; /* Espacement interne */
+    font-size: 1rem; /* Taille de la police */
+    margin-bottom: 20px; /* Espacement entre les champs */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .form-control:focus {
+    border-color: #007bff; /* Couleur de focus */
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.25); /* Lumière bleue subtile */
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px); /* Effet de levée au survol */
+  }
+
+  /* Responsivité */
+  @media screen and (max-width: 768px) {
+    .card {
+      padding: 20px;
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+    }
+  }
+</style>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card mx-auto" style="width: 40rem">
+      <div class="card-body">
+        <h4 class="card-title mb-3">Create A Job</h4>
+
+        <form method="POST">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="exampleInputEmail" class="form-label">Job title</label>
+            {% render_field form.title class="form-control"%}
+          </div>
+
+          <div class="mb-3">
+            <label for="exampleInputEmail" class="form-label">Salary</label>
+            {% render_field form.salary class="form-control"%}
+          </div>
+
+          <div class="mb-3">
+            <label for="exampleInputEmail" class="form-label">Location</label>
+            {% render_field form.location class="form-control"%}
+          </div>
+
+          <div class="mb-3">
+            <label for="exampleInputEmail" class="form-label">
+              Job Requirements</label
+            >
+            {% render_field form.requirements class="form-control"%}
+          </div>
+
+          <div class="mb-3">
+            <label for="exampleInputEmail" class="form-label"
+              >Ideal Candidate</label
+            >
+            {% render_field form.ideal_candidate class="form-control"%}
+          </div>
+
+          <div class="mb-3">
+            <label for="exampleInputEmail" class="form-label">
+              Job skills_required</label
+            >
+            {% render_field form.skills_required class="form-control"%}
+          </div>
+
+          <div class="mb-3">
+            <label for="exampleInputEmail" class="form-label">
+              Is this Job Available</label
+            >
+            {% render_field form.is_available class="form-check-input"%}
+          </div>
+
+          <button type="submit" class="btn btn-primary">submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{%endblock content%}

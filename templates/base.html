@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KETAB Job</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      select.btn {
+        appearance: none;
+        border: none;
+        color: white;
+        background-color: #007bff;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        height: auto;
+        width: 100px;
+        height: 38px;
+      }
+
+      select.btn:focus {
+        outline: none;
+      }
+
+      select.btn option {
+        color: black;
+        background-color: white;
+      }
+
+      select.btn-sm {
+        font-size: 14px;
+        padding: 5px 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">KETAB Job Portal</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          {%if request.user.is_authenticated%} {%if request.user.is_applicant%}
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'dashboard' %}">Home</a>
+            </li>
+
+            {%if request.user.has_resume%}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'job-list'  %}">Apply to Job</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'applied-details' %}"
+                >Your Applications</a
+              >
+            </li>
+            {%else%}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'update-info'%}"
+                >Create Resume</a
+              >
+            </li>
+            {%endif%}
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'Chatbot' %}">Chat</a>
+            </li>
+
+            <li><a href="{% url 'chat:inbox' %}">Messages</a></li>
+              
+            <li class="nav-item">
+              <a
+                class="nav-link disabled"
+                href="#"
+                tabindex="-1"
+                aria-disabled="true"
+                >{{request.user.username}}</a
+              >
+            </li>
+          </ul>
+          <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+          {%elif request.user.is_recruiter%}
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'dashboard' %}">Home</a>
+            </li>
+
+            {%if request.user.has_company%}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'create-job'%}">Create Job</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'manage-jobs'%}">Manage Jobs</a>
+            </li>
+
+            {%else%}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'update-staf'%}"
+                >Create Company</a
+              >
+            </li>
+            {%endif%}
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'Chatbot' %}">Chat</a>
+            </li>
+
+            
+              
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link disabled"
+                href="#"
+                tabindex="-1"
+                aria-disabled="true"
+                >{{request.user.username}}</a
+              >
+            </li>
+          </ul>
+          <a href="{% url 'logout' %}" class="btn btn-primary">Logout</a>
+          {%endif%} {%else%}
+
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="{% url 'job-list' %}"
+                >All Jobs</a
+              >
+            </li>
+          </ul>
+          <div class="d-flex align-items-center">
+            <a href="{% url 'login' %}" class="btn btn-primary me-2">Login</a>
+            <select
+              class="btn btn-primary btn-sm"
+              onchange="location = this.value;"
+            >
+              <option value="" disabled selected>Register</option>
+              <option value="{% url 'register-applicant' %}">
+                Register as Applicant
+              </option>
+              <option value="{% url 'register-recruiter' %}">
+                Register as Recruiter
+              </option>
+            </select>
+          </div>
+          {%endif%}
+        </div>
+      </div>
+    </nav>
+
+    {% if messages %} {% for message in messages %}
+    <div class="alert alert-{{message.tags}}" role="alert">
+      <b>{{message}}</b>
+    </div>
+    {% endfor %} {% endif %}
+
+    <!-- Main Content -->
+    <div class="container mt-5">{% block content %} {% endblock %}</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

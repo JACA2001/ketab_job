@@ -1,0 +1,117 @@
+{%extends 'base.html'%} {% block content%}
+<style>
+  /* Style général */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Titre principal */
+  h2 {
+    text-align: center;
+    color: #007bff;
+    margin: 20px 0;
+  }
+
+  /* Formulaire de recherche */
+  form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  form input[type="text"] {
+    width: 300px;
+    padding: 10px;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+  }
+
+  form button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+  form button:hover {
+    background-color: #0056b3;
+  }
+
+  /* Cartes des CVs */
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin: 15px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .card h5 {
+    color: #007bff;
+    margin-bottom: 10px;
+  }
+
+  .card p {
+    margin: 5px 0;
+    color: #555;
+  }
+
+  /* Boutons */
+  .card a.btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 15px;
+    color: #fff;
+    background-color: #007bff;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+
+  .card a.btn:hover {
+    background-color: #0056b3;
+  }
+
+  /* Message "No CV uploaded" */
+  .card p {
+    color: #dc3545;
+  }
+</style>
+
+<h2>Browse CVs</h2>
+<form method="get">
+  <input type="text" name="search" placeholder="Search by skills" />
+  <button type="submit">Search</button>
+</form>
+
+<div class="row">
+  {% if not cvs %}
+  <p class="text-center">No CVs found with relevant skills.</p>
+  {% endif %} {% for cv in cvs %}
+  <div class="card">
+    <h5>{{ cv.first_name }} {{ cv.surname }}</h5>
+    <p><strong>Skills:</strong> {{ cv.skills }}</p>
+
+    {% if cv.upload_cv %}
+    <a href="{{ cv.upload_cv.url }}" class="btn">Download CV</a>
+    {% else %}
+    <p>No CV uploaded yet</p>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+
+{%endblock content%}

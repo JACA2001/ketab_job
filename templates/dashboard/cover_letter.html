@@ -1,0 +1,26 @@
+{%extends 'base.html'%} {%block content%}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generated Cover Letter</title>
+  </head>
+  <body>
+    <h1>Your Cover Letter</h1>
+    {% if letter %}
+    <textarea readonly rows="10" cols="80">{{ letter }}</textarea>
+    <br />
+    <form method="get" action="{% url 'download_letter' %}">
+      <input type="hidden" name="content" value="{{ letter }}" />
+      <button type="submit">Download Letter</button>
+    </form>
+    {% elif error %}
+    <p>{{ error }}</p>
+    {% else %}
+    <p>No cover letter generated yet.</p>
+    {% endif %}
+  </body>
+</html>
+
+{%endblock content%}

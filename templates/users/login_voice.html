@@ -1,0 +1,52 @@
+{% comment %} {% extends 'base.html' %} {% block content %}
+<h1>Login with Voice Recognition</h1>
+
+<!-- Bouton pour démarrer la reconnaissance vocale -->
+<button id="start-recognition">Start Voice Recognition</button>
+
+<!-- Formulaire de connexion avec un champ caché pour transmettre les données vocales -->
+<form id="login-form" action="{% url 'login' %}" method="POST">
+  {% csrf_token %}
+  <input type="hidden" name="voice_data" id="voice-data" value="" />
+  <button type="submit">Submit</button>
+</form>
+
+<!-- Script JavaScript pour la reconnaissance vocale -->
+<script>
+  const startRecognitionButton = document.getElementById("start-recognition");
+  const voiceDataInput = document.getElementById("voice-data");
+
+  // Fonction pour démarrer la reconnaissance vocale
+  const startVoiceRecognition = () => {
+    const recognition = new (window.SpeechRecognition ||
+      window.webkitSpeechRecognition)();
+    recognition.lang = "fr-FR"; // Langue française
+    recognition.continuous = false; // Ne pas continuer après une phrase
+    recognition.interimResults = false; // Ne pas afficher les résultats intermédiaires
+
+    recognition.start(); // Démarre l'écoute vocale
+
+    recognition.onstart = () => {
+      alert("Listening... Please say your password.");
+    };
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript; // Capture le texte parlé
+      console.log("Voice captured: ", transcript);
+
+      // Mettre à jour le champ caché avec les données vocales
+      voiceDataInput.value = transcript;
+
+      // Optionnel : Vous pouvez afficher le texte capturé pour vérification
+      alert("Voice captured: " + transcript + ". Now you can submit the form.");
+    };
+
+    recognition.onerror = (event) => {
+      alert("Error with voice recognition: " + event.error);
+    };
+  };
+
+  // Lier l'événement de reconnaissance vocale au bouton
+  startRecognitionButton.addEventListener("click", startVoiceRecognition);
+</script>
+{% endblock %} {% endcomment %}
