@@ -4,6 +4,7 @@ from .forms import ResumeForm
 from .utils import extraire_donnees, generer_lettre_motivation
 from job.models import Job 
 
+
 def upload_resume(request, job_id):
     job = get_object_or_404(Job, pk=job_id)  # Récupérer l'emploi spécifique
 
